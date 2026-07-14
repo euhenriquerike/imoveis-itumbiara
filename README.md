@@ -1,8 +1,12 @@
 # Imóveis Itumbiara
 
-Dashboard pessoal que junta os imóveis à venda de Itumbiara-GO num só lugar, com filtro por valor, quartos, banheiros, vagas, área, tipo e bairro. Fonte: Wimoveis (que já agrega a maioria das imobiliárias da cidade).
+Dashboard que junta os imóveis à venda de Itumbiara-GO num só lugar, com filtro por valor, quartos, banheiros, vagas, área, tipo e bairro. Fonte: Wimoveis (que já agrega a maioria das imobiliárias da cidade).
 
-## Usar o dashboard
+## Site público
+
+**https://euhenriquerike.github.io/imoveis-itumbiara/** — qualquer pessoa acessa por esse link.
+
+## Usar localmente
 
 Dê **duplo clique em `index.html`**. Abre no navegador, sem precisar de servidor. Cada card leva ao anúncio original.
 
