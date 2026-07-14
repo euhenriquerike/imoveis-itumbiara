@@ -1,0 +1,5 @@
+node_modules/
+atualizar.log
+launchd.*.log
+*.png
+diag*.js

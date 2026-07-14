@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imóveis em Itumbiara</title>
+<style>
+  :root{--bg:#f5f6f8;--card:#fff;--ink:#1a1d21;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e;--accent2:#0d5c55}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 20px;position:sticky;top:0;z-index:10}
+  header h1{margin:0;font-size:18px}
+  header .meta{color:var(--muted);font-size:12px;margin-top:2px}
+  .wrap{display:grid;grid-template-columns:270px 1fr;gap:20px;padding:20px;max-width:1400px;margin:0 auto}
+  .filtros{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:84px;height:fit-content}
+  .filtros h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 12px}
+  .campo{margin-bottom:14px}
+  .campo label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:#374151}
+  .campo input,.campo select{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+  .dois{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:14px}
+  .chk input{width:auto}
+  button.reset{width:100%;padding:9px;border:1px solid var(--line);background:#fff;border-radius:8px;font-size:13px;cursor:pointer;color:#374151}
+  button.reset:hover{background:#f9fafb}
+  .barra{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+  .barra .cnt{font-size:14px;color:var(--muted)}
+  .barra .cnt b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .imovel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:.12s}
+  .imovel:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(15,118,110,.10);transform:translateY(-1px)}
+  .imovel .tipo{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+  .imovel .preco{font-size:20px;font-weight:700}
+  .imovel .preco.consulte{font-size:15px;color:var(--muted);font-weight:600}
+  .imovel .bairro{font-size:13px;color:#374151}
+  .imovel .specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .imovel .specs span{font-size:12px;background:#f3f4f6;border-radius:6px;padding:3px 8px;color:#374151}
+  .vazio{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px}
+  select#ordem{width:auto;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px}
+  @media(max-width:760px){.wrap{grid-template-columns:1fr}.filtros{position:static}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Imóveis à venda em Itumbiara</h1>
+  <div class="meta" id="meta">Carregando…</div>
+</header>
+<div class="wrap">
+  <aside class="filtros">
+    <h2>Filtros</h2>
+    <div class="campo"><label>Valor até (R$)</label><input type="number" id="fValorMax" placeholder="ex: 400000" step="10000"></div>
+    <div class="campo"><label>Valor a partir de (R$)</label><input type="number" id="fValorMin" placeholder="ex: 150000" step="10000"></div>
+    <div class="campo dois">
+      <div><label>Quartos (mín)</label><select id="fQuartos"><option value="">Todos</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div><label>Banheiros (mín)</label><select id="fBanh"><option value="">Todos</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    </div>
+    <div class="campo dois">
+      <div><label>Vagas (mín)</label><select id="fVagas"><option value="">Todas</option><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+      <div><label>Área mín (m²)</label><input type="number" id="fArea" placeholder="ex: 80"></div>
+    </div>
+    <div class="campo"><label>Tipo</label><select id="fTipo"><option value="">Todos</option></select></div>
+    <div class="campo"><label>Bairro</label><select id="fBairro"><option value="">Todos</option></select></div>
+    <div class="campo"><label>Busca</label><input type="text" id="fBusca" placeholder="palavra no anúncio"></div>
+    <label class="chk"><input type="checkbox" id="fComPreco"> Só imóveis com preço</label>
+    <button class="reset" id="btnReset">Limpar filtros</button>
+  </aside>
+  <main>
+    <div class="barra">
+      <div class="cnt" id="cnt"></div>
+      <select id="ordem">
+        <option value="preco-asc">Menor preço</option>
+        <option value="preco-desc">Maior preço</option>
+        <option value="area-desc">Maior área</option>
+        <option value="quartos-desc">Mais quartos</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+<script src="data/imoveis.js" onerror="window.__semJs=1"></script>
+<script>
+const fmt = (n)=> n==null ? null : n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0});
+let DADOS = [];
+
+const el = (id)=>document.getElementById(id);
+const filtros = ['fValorMax','fValorMin','fQuartos','fBanh','fVagas','fArea','fTipo','fBairro','fBusca','fComPreco','ordem'];
+
+function popular(campo, valores, label){
+  const s = el(campo);
+  [...new Set(valores.filter(Boolean))].sort().forEach(v=>{
+    const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o);
+  });
+}
+
+function aplicar(){
+  const vMax=+el('fValorMax').value||Infinity, vMin=+el('fValorMin').value||0;
+  const q=+el('fQuartos').value||0, b=+el('fBanh').value||0, vg=+el('fVagas').value||0, ar=+el('fArea').value||0;
+  const tp=el('fTipo').value, br=el('fBairro').value, busca=el('fBusca').value.toLowerCase().trim();
+  const soPreco=el('fComPreco').checked;
+
+  let res = DADOS.filter(i=>{
+    if(soPreco && i.preco==null) return false;
+    if(i.preco!=null){ if(i.preco>vMax||i.preco<vMin) return false; }
+    else if(vMax!==Infinity||vMin>0){ if(soPreco) return false; } // sem preço só passa se não filtrou valor...
+    if(q && (i.quartos||0)<q) return false;
+    if(b && (i.banheiros||0)<b) return false;
+    if(vg && (i.vagas||0)<vg) return false;
+    if(ar && (i.area||0)<ar) return false;
+    if(tp && i.tipo!==tp) return false;
+    if(br && i.bairro!==br) return false;
+    if(busca && !((i.titulo||'')+' '+(i.bairro||'')+' '+(i.endereco||'')).toLowerCase().includes(busca)) return false;
+    return true;
+  });
+
+  // quando filtra por valor, esconde os "sob consulta" (não dá pra saber se cabem)
+  if(el('fValorMax').value||el('fValorMin').value) res = res.filter(i=>i.preco!=null);
+
+  const [k,dir]=el('ordem').value.split('-');
+  res.sort((a,b2)=>{
+    const va=a[k==='preco'?'preco':k]??(dir==='asc'?Infinity:-Infinity);
+    const vb=b2[k==='preco'?'preco':k]??(dir==='asc'?Infinity:-Infinity);
+    return dir==='asc'?va-vb:vb-va;
+  });
+  render(res);
+}
+
+function render(res){
+  el('cnt').innerHTML = `<b>${res.length}</b> imóveis`;
+  const g=el('grid');
+  if(!res.length){ g.innerHTML='<div class="vazio">Nenhum imóvel com esses filtros.</div>'; return; }
+  g.innerHTML = res.map(i=>{
+    const preco = i.preco!=null ? `<div class="preco">${fmt(i.preco)}</div>` : `<div class="preco consulte">Sob consulta</div>`;
+    const specs=[];
+    if(i.quartos) specs.push(`${i.quartos} quarto${i.quartos>1?'s':''}`);
+    if(i.banheiros) specs.push(`${i.banheiros} banh.`);
+    if(i.vagas) specs.push(`${i.vagas} vaga${i.vagas>1?'s':''}`);
+    if(i.area) specs.push(`${i.area} m²`);
+    return `<a class="imovel" href="${i.link}" target="_blank" rel="noopener">
+      <span class="tipo">${i.tipo}</span>${preco}
+      <div class="bairro">${i.bairro||''}${i.endereco?' · '+i.endereco:''}</div>
+      <div class="specs">${specs.map(s=>`<span>${s}</span>`).join('')}</div>
+    </a>`;
+  }).join('');
+}
+
+function iniciar(d){
+  DADOS = d.imoveis;
+  const dt = new Date(d.atualizadoEm).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  el('meta').textContent = `${d.total} imóveis · ${d.comPreco} com preço · fonte ${d.fonte} · atualizado ${dt}`;
+  popular('fTipo', DADOS.map(i=>i.tipo));
+  popular('fBairro', DADOS.map(i=>i.bairro));
+  filtros.forEach(f=>{ el(f).addEventListener('input',aplicar); });
+  el('btnReset').addEventListener('click',()=>{ filtros.forEach(f=>{ const e=el(f); if(e.type==='checkbox')e.checked=false; else if(e.tagName==='SELECT'&&f!=='ordem')e.value=''; else if(e.tagName==='INPUT')e.value=''; }); aplicar(); });
+  aplicar();
+}
+
+if(window.__IMOVEIS__){ iniciar(window.__IMOVEIS__); }
+else{ fetch('data/imoveis.json').then(r=>r.json()).then(iniciar)
+  .catch(()=>{ el('meta').textContent='Erro ao carregar os dados. Rode "npm run scrape" primeiro.'; }); }
+</script>
+</body>
+</html>
