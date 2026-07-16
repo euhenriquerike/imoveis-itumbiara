@@ -1,0 +1,28 @@
+name: Atualizar imóveis
+
+on:
+  workflow_dispatch:   # teste manual; schedule é ligado depois se as fontes passarem
+
+permissions:
+  contents: write
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: node scraper.js
+      - name: Publicar dados
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/imoveis.json data/imoveis.js
+          if git diff --staged --quiet; then echo "sem mudanças"; else
+            git commit -m "Atualiza imóveis (Actions $(date -u +%Y-%m-%d))"
+            git push
+          fi
