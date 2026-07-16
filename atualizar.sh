@@ -3,6 +3,7 @@
 export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 cd "$(dirname "$0")" || exit 1
 echo "===== $(date '+%Y-%m-%d %H:%M:%S') =====" >> atualizar.log
+git pull --rebase >> atualizar.log 2>&1   # pega o que a nuvem publicou antes de coletar
 node scraper.js >> atualizar.log 2>&1
 # publica os dados novos no site (GitHub Pages)
 git add data/imoveis.json data/imoveis.js >> atualizar.log 2>&1

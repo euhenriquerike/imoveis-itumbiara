@@ -1,7 +1,9 @@
 name: Atualizar imóveis
 
 on:
-  workflow_dispatch:   # teste manual; schedule é ligado depois se as fontes passarem
+  schedule:
+    - cron: "23 9 * * *"   # 06:23 BRT (09:23 UTC), diário — roda na nuvem, sem depender de computador
+  workflow_dispatch:        # botão "Run workflow" pra atualizar na hora
 
 permissions:
   contents: write
