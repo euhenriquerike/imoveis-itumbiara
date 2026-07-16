@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "scrape": "node scraper.js",
-    "start": "python3 -m http.server 8000"
+    "start": "python3 -m http.server 8000",
+    "atualizar": "node atualizar.mjs"
   },
   "keywords": [],
   "author": "",
