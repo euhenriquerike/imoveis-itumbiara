@@ -33,7 +33,7 @@ function normalizar(raw) {
   return {
     fonte: 'Beira Rio',
     tipo: tipoDoTexto(raw.title + ' ' + raw.link),
-    preco: /consulte|sob/i.test(raw.precoTexto) ? null : num(raw.precoTexto),
+    preco: /consulte|sob/i.test(raw.precoTexto) ? null : (num(raw.precoTexto) || null),
     quartos: facil(/quarto/i),
     banheiros: null,
     vagas: facil(/vaga/i),

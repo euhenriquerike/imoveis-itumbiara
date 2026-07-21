@@ -2,6 +2,7 @@ node_modules/
 atualizar.log
 launchd.*.log
 *.png
+!logo-habitar.png
 diag*.js
 test*.js
 shot.js

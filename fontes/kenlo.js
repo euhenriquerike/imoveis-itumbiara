@@ -22,7 +22,7 @@ function normalizar(raw, fonteNome) {
   const slug = raw.link.split('/').slice(-2)[0] || '';
   const areaM = slug.match(/(\d[\d-]*)-m$/); // "176-m" -> 176 ; "1-440-m" -> 1440
   // preço: só valor de venda. Ignora aluguel ("R$ .../mês") e "Sob consulta".
-  const preco = /m[êe]s|sob|consulte/i.test(raw.precoTexto) ? null : num(raw.precoTexto);
+  const preco = /m[êe]s|sob|consulte/i.test(raw.precoTexto) ? null : (num(raw.precoTexto) || null);
   return {
     fonte: fonteNome,
     tipo: tipoDoTexto(raw.tipo + ' ' + raw.link),

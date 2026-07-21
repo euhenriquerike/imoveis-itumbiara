@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Imóveis em Itumbiara</title>
+<title>Buscador de Imóveis à venda em Itumbiara</title>
 <style>
   :root{--bg:#f5f6f8;--card:#fff;--ink:#1a1d21;--muted:#6b7280;--line:#e5e7eb;--accent:#0f766e;--accent2:#0d5c55}
   *{box-sizing:border-box}
   body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
-  header{background:var(--card);border-bottom:1px solid var(--line);padding:16px 20px;position:sticky;top:0;z-index:10}
-  header h1{margin:0;font-size:18px}
-  header .meta{color:var(--muted);font-size:12px;margin-top:2px}
+  header{background:#183d28;border-bottom:1px solid rgba(255,255,255,.12);padding:12px 20px;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:16px}
+  header .logo{height:60px;width:auto;flex:none;display:block}
+  header h1{margin:0;font-size:18px;color:#fff}
+  header .meta{color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+  @media(max-width:760px){header{gap:12px;padding:10px 14px}header .logo{height:46px}header h1{font-size:15px}}
   .wrap{display:grid;grid-template-columns:270px 1fr;gap:20px;padding:20px;max-width:1400px;margin:0 auto}
-  .filtros{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:84px;height:fit-content}
+  .filtros{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:105px;height:fit-content}
   .filtros h2{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 0 12px}
   .campo{margin-bottom:14px}
   .campo label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:#374151}
@@ -43,8 +45,11 @@
 </head>
 <body>
 <header>
-  <h1>Imóveis à venda em Itumbiara</h1>
-  <div class="meta" id="meta">Carregando…</div>
+  <img class="logo" src="logo-habitar.png" alt="Habitar Imóveis">
+  <div class="titulo">
+    <h1>Buscador de Imóveis à venda em Itumbiara</h1>
+    <div class="meta" id="meta">Carregando…</div>
+  </div>
 </header>
 <div class="wrap">
   <aside class="filtros">
@@ -150,6 +155,8 @@ function render(res){
 
 function iniciar(d){
   DADOS = d.imoveis;
+  // preço 0 (ou negativo) não é preço real — trata como "sob consulta"
+  DADOS.forEach(i=>{ if(i.preco!=null && i.preco<=0) i.preco=null; });
   const dt = new Date(d.atualizadoEm).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
   const fontesTxt = d.porFonte ? Object.entries(d.porFonte).map(([f,n])=>`${f} (${n})`).join(', ') : (d.fonte||'');
   el('meta').textContent = `${d.total} imóveis · ${d.comPreco} com preço · ${fontesTxt} · atualizado ${dt}`;
